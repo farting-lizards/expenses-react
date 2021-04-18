@@ -11,7 +11,7 @@ function App(): JSX.Element {
             </Box>
             <Button variant="contained" color="primary">
                 Hello World!
-                    </Button>
+                        </Button>
         </div>
     );
 }
