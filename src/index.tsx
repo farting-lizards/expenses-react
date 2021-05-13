@@ -1,14 +1,40 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import ExpensesApp from './ExpensesApp';
+import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+
+const font = "'Baloo Bhaina 2', cursive";
+const theme = createMuiTheme({
+    palette: {
+        type: 'dark',
+        primary: {
+            main: '#D60E3C',
+        },
+        secondary: {
+            main: '#494949',
+        },
+        background: {
+            default: '#000000',
+        },
+    },
+    typography: {
+        fontFamily: font,
+    },
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
+    <React.StrictMode>
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+                <ExpensesApp />
+            </ThemeProvider>
+        </Provider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

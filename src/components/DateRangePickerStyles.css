@@ -1,0 +1,11 @@
+.price-container {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin: -64px auto 0;
+}
