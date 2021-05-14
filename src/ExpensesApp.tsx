@@ -5,6 +5,21 @@ import { DateRangePicker } from './components/DateRangePicker';
 import { TotalAmount } from './components/TotalAmount';
 import { fetchExpenses, selectAmountInEuros, selectExpensesInRange, Status, updateFromDate, updateToDate } from './redux/reducers/expenses';
 import { RootState } from './redux/store';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    buttonContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        margin: '8px 36px',
+    },
+    button: {
+        minWidth: '90px',
+        fontWeight: 'bold',
+        textTransform: 'capitalize',
+    },
+}));
 
 function ExpensesApp(): JSX.Element {
     const dispatch = useDispatch();
@@ -13,8 +28,8 @@ function ExpensesApp(): JSX.Element {
     const expensesStatus = useSelector((state: RootState) => state.expenses.status);
     const fromDate = useSelector((state: RootState) => state.expenses.fromDate);
     const toDate = useSelector((state: RootState) => state.expenses.toDate);
-
     const error = useSelector((state: RootState) => state.expenses.error);
+    const classes = useStyles();
 
     useEffect(() => {
         if (expensesStatus === Status.IDLE) {
@@ -48,6 +63,14 @@ function ExpensesApp(): JSX.Element {
         <div>
             <DateRangePicker fromDate={fromDate} toDate={toDate} onFromDateChanged={onFromDateChanged} onToDateChanged={onToDateChanged} />
             <TotalAmount amountInEuros={amountInEuros} />
+            <div className={classes.buttonContainer}>
+                <Button variant="contained" color="primary" className={classes.button}>
+                    Show All
+                </Button>
+                <Button variant="contained" color="primary" className={classes.button}>
+                    Add
+                </Button>
+            </div>
             <div className="App">{content}</div>
         </div>
     );
