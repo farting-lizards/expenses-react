@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
-import './App.css';
-import Box from '@material-ui/core/Box';
-import { Button, createMuiTheme } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from './redux/store';
-import { fetchExpenses, selectAllExpenses, selectExpensesInRange, Status, updateFromDate } from './redux/reducers/expenses';
+import './App.css';
 import { DateRangePicker } from './components/DateRangePicker';
-import moment from 'moment';
-import { orange } from '@material-ui/core/colors';
+import { TotalAmount } from './components/TotalAmount';
+import { fetchExpenses, selectAmountInEuros, selectExpensesInRange, Status, updateFromDate, updateToDate } from './redux/reducers/expenses';
+import { RootState } from './redux/store';
 
 function ExpensesApp(): JSX.Element {
     const dispatch = useDispatch();
     const expenses = useSelector(selectExpensesInRange);
+    const amountInEuros = useSelector(selectAmountInEuros);
     const expensesStatus = useSelector((state: RootState) => state.expenses.status);
     const fromDate = useSelector((state: RootState) => state.expenses.fromDate);
     const toDate = useSelector((state: RootState) => state.expenses.toDate);
@@ -43,12 +41,13 @@ function ExpensesApp(): JSX.Element {
     };
 
     function onToDateChanged(newToDate: Date) {
-        dispatch(updateFromDate(newToDate.toISOString()));
+        dispatch(updateToDate(newToDate.toISOString()));
     }
 
     return (
         <div>
             <DateRangePicker fromDate={fromDate} toDate={toDate} onFromDateChanged={onFromDateChanged} onToDateChanged={onToDateChanged} />
+            <TotalAmount amountInEuros={amountInEuros} />
             <div className="App">{content}</div>
         </div>
     );

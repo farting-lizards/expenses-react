@@ -1,9 +1,6 @@
+import { AnyAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Expense } from '../../types';
-import { ADD_EXPENSE, GET_EXPENSES } from '../actions';
-import { createSlice, createAsyncThunk, Action, AnyAction } from '@reduxjs/toolkit';
 import { client } from '../../utilities/client';
-import { mockExpenses } from '../../utilities/mockData';
-import { act } from 'react-dom/test-utils';
 import { RootState } from '../store';
 
 export enum Status {
@@ -58,7 +55,7 @@ const expensesSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase('expenses/fetchExpenses/pending', (state, action) => {
+        builder.addCase('expenses/fetchExpenses/pending', (state) => {
             state.status = Status.LOADING;
         });
         builder.addCase('expenses/fetchExpenses/fulfilled', (state, action: AnyAction) => {
@@ -89,3 +86,26 @@ export const selectExpensesInRange = (state: RootState): Expense[] => {
             new Date(expense.timestamp) <= new Date(state.expenses.toDate)
     );
 };
+
+export const selectAmountInEuros = (state: RootState): number => {
+    const expenses = selectExpensesInRange(state);
+    const total = expenses.reduce((acc, expense) => {
+        if (expense.currency === 'CHF') {
+            return acc + +chfToEuro(expense.amount).toFixed(2);
+        } else {
+            return acc + expense.amount;
+        }
+    }, 0);
+    console.log('Called once', total);
+    return total;
+};
+
+export function chfToEuro(amount: number): number {
+    return amount / CONVERSION_RATE_EUR_TO_CHF;
+}
+
+export function euroToChf(amount: number): number {
+    return amount * CONVERSION_RATE_EUR_TO_CHF;
+}
+
+export const CONVERSION_RATE_EUR_TO_CHF = 1.1;

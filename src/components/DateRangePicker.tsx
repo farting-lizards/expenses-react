@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
 import Box from '@material-ui/core/Box';
-import { Button, TextField } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
-import './DateRangePickerStyles.css';
 import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './DateRangePickerStyles.css';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -49,29 +47,24 @@ export function DateRangePicker(props: {
     };
 
     return (
-        <div>
-            <Box bgcolor="primary.main" color="primary.contrastText" p={7} className={classes.container}>
-                <form noValidate>
-                    <DatePicker
-                        selected={fromDate}
-                        onChange={(date: Date) => changeFromDate(date)}
-                        dateFormat="dd MMM yy"
-                        className={classes.date}
-                    />
-                </form>{' '}
-                -
-                <form noValidate>
-                    <DatePicker
-                        selected={toDate}
-                        dateFormat="dd MMMM yy"
-                        onChange={(date: Date) => changeToDate(date)}
-                        className={classes.date}
-                    />
-                </form>
-            </Box>
-            <Box className="price-container" bgcolor="secondary.main" color="secondary.contrastText">
-                567
-            </Box>
-        </div>
+        <Box bgcolor="primary.main" color="primary.contrastText" p={7} className={classes.container}>
+            <form noValidate>
+                <DatePicker
+                    selected={fromDate}
+                    onChange={(date: Date) => changeFromDate(date)}
+                    dateFormat="dd MMM yy"
+                    className={classes.date}
+                />
+            </form>{' '}
+            -
+            <form noValidate>
+                <DatePicker
+                    selected={toDate}
+                    dateFormat="dd MMMM yy"
+                    onChange={(date: Date) => changeToDate(date)}
+                    className={classes.date}
+                />
+            </form>
+        </Box>
     );
 }
