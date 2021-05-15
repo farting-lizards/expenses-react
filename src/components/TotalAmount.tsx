@@ -11,8 +11,8 @@ import './DateRangePickerStyles.css';
 
 const useStyles = makeStyles((theme) => ({
     priceContainer: {
-        width: '128px',
-        height: '128px',
+        width: '156px',
+        height: '156px',
         borderRadius: '50%',
         textAlign: 'center',
         display: 'flex',

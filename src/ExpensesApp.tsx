@@ -7,6 +7,7 @@ import { fetchExpenses, selectAmountInEuros, selectExpensesInRange, Status, upda
 import { RootState } from './redux/store';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import { ExpenseItem } from './components/ExpenseItem';
 
 const useStyles = makeStyles((theme) => ({
     buttonContainer: {
@@ -18,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
         minWidth: '90px',
         fontWeight: 'bold',
         textTransform: 'capitalize',
+    },
+    content: {
+        margin: '24px 36px',
     },
 }));
 
@@ -41,12 +45,7 @@ function ExpensesApp(): JSX.Element {
     if (expensesStatus === Status.LOADING) {
         content = <div className="loader">Loading...</div>;
     } else if (expensesStatus === Status.COMPLETED) {
-        console.log('expenses', expenses);
-        content = expenses.map((expense) => (
-            <div key={expense.id}>
-                {expense.category} {expense.timestamp}
-            </div>
-        ));
+        content = expenses.map((expense) => <ExpenseItem expense={expense} key={expense.id} />);
     } else if (expensesStatus === Status.FAILED) {
         content = <div>{error}</div>;
     }
@@ -71,7 +70,7 @@ function ExpensesApp(): JSX.Element {
                     Add
                 </Button>
             </div>
-            <div className="App">{content}</div>
+            <div className={classes.content}>{content}</div>
         </div>
     );
 }

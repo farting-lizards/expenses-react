@@ -4,7 +4,7 @@ export interface Expense {
     currency: 'EUR' | 'CHF';
     timestamp: string;
     category: string;
-    description?: string;
+    description: string;
     account: {
         id: number;
         name: string;
