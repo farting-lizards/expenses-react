@@ -87,7 +87,7 @@ const accounts = [
     },
     {
         value: 4,
-        label: 'Transferwise David',
+        label: 'Revolut Dini',
     },
 ];
 
