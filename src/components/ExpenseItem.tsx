@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
         alignItems: 'center',
-        padding: '22px 20px 20px 16px',
+        padding: '22px 0px 20px 16px',
         borderRadius: '8px',
         fontWeight: 'bold',
         justifyContent: 'space-between',
