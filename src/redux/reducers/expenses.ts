@@ -1,5 +1,5 @@
 import { AnyAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Expense, NewExpense } from '../../types';
+import { Expense, NewExpense, Summary } from '../../types';
 import { client } from '../../utilities/client';
 import { RootState } from '../store';
 
@@ -123,6 +123,25 @@ export const selectAmountInEuros = (state: RootState): number => {
         }
     }, 0);
     return total;
+};
+
+export const selectSummary = (state: RootState): Summary => {
+    const expenses = selectExpensesInRange(state);
+
+    const summary = expenses.reduce(
+        (acc: Summary, expense: Expense) => {
+            const amount = expense.currency === 'EUR' ? expense.amount : chfToEuro(expense.amount);
+            if (expense.account.name === 'wise david' || expense.account.name === 'revolut david') {
+                acc.david = acc.david + +amount.toFixed(2);
+            } else if (expense.account.name === 'wise dini' || expense.account.name === 'revolut dini') {
+                acc.dini = acc.dini + +amount.toFixed(2);
+            }
+            return acc;
+        },
+        { david: 0, dini: 0 }
+    );
+
+    return summary;
 };
 
 export function chfToEuro(amount: number): number {

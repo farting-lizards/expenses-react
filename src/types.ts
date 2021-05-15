@@ -20,4 +20,9 @@ export interface NewExpense {
     accountId: number;
 }
 
+export interface Summary {
+    david: number;
+    dini: number;
+}
+
 export type Currency = 'EUR' | 'CHF';
