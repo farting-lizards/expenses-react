@@ -1,7 +1,7 @@
 export interface Expense {
     id: number;
     amount: number;
-    currency: Currency;
+    currency: 'EUR' | 'CHF';
     timestamp: string;
     category: string;
     description: string;
@@ -25,4 +25,4 @@ export interface Summary {
     dini: number;
 }
 
-export type Currency = 'EUR' | 'CHF';
+export type Currency = Expense['currency'];
