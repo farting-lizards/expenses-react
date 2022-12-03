@@ -114,9 +114,9 @@ export const selectAmountInEuros = (state: RootState): number => {
     const expenses = selectExpensesInRange(state);
     const total = expenses.reduce((acc, expense) => {
         if (expense.currency === 'CHF') {
-            return acc + +chfToEuro(expense.amount).toFixed(2);
+            return +(acc + chfToEuro(expense.amount)).toFixed(2);
         } else {
-            return acc + expense.amount;
+            return +(acc + expense.amount).toFixed(2);
         }
     }, 0);
     return total;
@@ -124,14 +124,13 @@ export const selectAmountInEuros = (state: RootState): number => {
 
 export const selectSummary = (state: RootState): Summary => {
     const expenses = selectExpensesInRange(state);
-
     const summary = expenses.reduce(
         (acc: Summary, expense: Expense) => {
             const amount = expense.currency === 'EUR' ? expense.amount : chfToEuro(expense.amount);
             if (expense.account.name === 'wise david' || expense.account.name === 'revolut david') {
-                acc.david = acc.david + +amount.toFixed(2);
+                acc.david = +(acc.david + amount).toFixed(2);
             } else if (expense.account.name === 'wise dini' || expense.account.name === 'revolut dini') {
-                acc.dini = acc.dini + +amount.toFixed(2);
+                acc.dini = +(acc.dini + amount).toFixed(2);
             }
             return acc;
         },
