@@ -46,7 +46,8 @@ export const SummaryDialog = ({ open, handleClose, summary }: { open: boolean; h
     const classes = useStyles();
     const payer = summary.david > summary.dini ? 'dini' : 'david';
     const payee = payer === 'david' ? 'dini' : 'david';
-    const amountOwed = (summary[payee] - summary[payer]).toFixed(2);
+    const amountOwed = ((summary[payee] - summary[payer]) / 2).toFixed(2);
+
     return (
         <Dialog open={open} onClose={handleClose} classes={{ paper: classes.paper }} fullWidth>
             <DialogContent className={classes.container}>

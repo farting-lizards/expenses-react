@@ -30,7 +30,6 @@ export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async ()
 export const addExpense = createAsyncThunk(
     'expenses/addExpense',
     async (payload: { expense: NewExpense }): Promise<Expense> => {
-        console.log(payload);
         const response = await client.post('/api/expenses', payload.expense);
         return response;
     }
@@ -39,7 +38,6 @@ export const addExpense = createAsyncThunk(
 export const editExpense = createAsyncThunk(
     'expenses/editExpense',
     async (payload: { expense: NewExpense; id: number }): Promise<Expense> => {
-        console.log(payload);
         const response = await client.put(`/api/expenses/${payload.id}`, payload.expense);
         return response;
     }
@@ -48,7 +46,6 @@ export const editExpense = createAsyncThunk(
 export const deleteExpense = createAsyncThunk(
     'expenses/deleteExpense',
     async (payload: { id: number }): Promise<number> => {
-        console.log('DeleteExpense payload: ', payload);
         const response = await client.delete(`/api/expenses/${payload.id}`);
         return response;
     }
@@ -117,9 +114,9 @@ export const selectAmountInEuros = (state: RootState): number => {
     const expenses = selectExpensesInRange(state);
     const total = expenses.reduce((acc, expense) => {
         if (expense.currency === 'CHF') {
-            return acc + +chfToEuro(expense.amount).toFixed(2);
+            return +(acc + chfToEuro(expense.amount)).toFixed(2);
         } else {
-            return acc + expense.amount;
+            return +(acc + expense.amount).toFixed(2);
         }
     }, 0);
     return total;
@@ -127,14 +124,13 @@ export const selectAmountInEuros = (state: RootState): number => {
 
 export const selectSummary = (state: RootState): Summary => {
     const expenses = selectExpensesInRange(state);
-
     const summary = expenses.reduce(
         (acc: Summary, expense: Expense) => {
             const amount = expense.currency === 'EUR' ? expense.amount : chfToEuro(expense.amount);
             if (expense.account.name === 'wise david' || expense.account.name === 'revolut david') {
-                acc.david = acc.david + +amount.toFixed(2);
+                acc.david = +(acc.david + amount).toFixed(2);
             } else if (expense.account.name === 'wise dini' || expense.account.name === 'revolut dini') {
-                acc.dini = acc.dini + +amount.toFixed(2);
+                acc.dini = +(acc.dini + amount).toFixed(2);
             }
             return acc;
         },

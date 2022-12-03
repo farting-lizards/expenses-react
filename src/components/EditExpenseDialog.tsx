@@ -156,7 +156,6 @@ export const EditExpenseDialog = ({
 
     const dispatch = useDispatch();
     const classes = useStyles();
-    console.log(currentExpense);
 
     const handleEditExpense = () => {
         const expenseToEdit: NewExpense = {

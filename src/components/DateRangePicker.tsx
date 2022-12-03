@@ -36,12 +36,10 @@ export function DateRangePicker(props: {
     const [toDate, setToDate] = useState(new Date(props.toDate));
 
     const changeFromDate = (date: Date) => {
-        console.log('Newe from Date', date);
         setFromDate(date);
         props.onFromDateChanged(date);
     };
     const changeToDate = (date: Date) => {
-        console.log('Newe to Date', date);
         setToDate(date);
         props.onToDateChanged(date);
     };
