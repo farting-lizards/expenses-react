@@ -30,7 +30,6 @@ export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async ()
 export const addExpense = createAsyncThunk(
     'expenses/addExpense',
     async (payload: { expense: NewExpense }): Promise<Expense> => {
-        console.log(payload);
         const response = await client.post('/api/expenses', payload.expense);
         return response;
     }
@@ -39,7 +38,6 @@ export const addExpense = createAsyncThunk(
 export const editExpense = createAsyncThunk(
     'expenses/editExpense',
     async (payload: { expense: NewExpense; id: number }): Promise<Expense> => {
-        console.log(payload);
         const response = await client.put(`/api/expenses/${payload.id}`, payload.expense);
         return response;
     }
@@ -48,7 +46,6 @@ export const editExpense = createAsyncThunk(
 export const deleteExpense = createAsyncThunk(
     'expenses/deleteExpense',
     async (payload: { id: number }): Promise<number> => {
-        console.log('DeleteExpense payload: ', payload);
         const response = await client.delete(`/api/expenses/${payload.id}`);
         return response;
     }
