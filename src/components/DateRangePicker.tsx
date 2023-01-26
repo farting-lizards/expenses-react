@@ -1,4 +1,4 @@
-import Box from '@material-ui/core/Box';
+import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(1),
         textAlign: 'center',
         fontWeight: 800,
+        fontFamily: theme.typography.fontFamily,
     },
 }));
 
@@ -58,7 +59,7 @@ export function DateRangePicker(props: {
             <form noValidate>
                 <DatePicker
                     selected={toDate}
-                    dateFormat="dd MMMM yy"
+                    dateFormat="dd MMM yy"
                     onChange={(date: Date) => changeToDate(date)}
                     className={classes.date}
                 />

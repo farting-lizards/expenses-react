@@ -53,7 +53,7 @@ export function TotalAmount(props: { amountInEuros: number }): JSX.Element {
         }
     };
     return (
-        <Box className={classes.priceContainer} bgcolor="secondary.main" color="secondary.contrastText">
+        <Box className={classes.priceContainer} bgcolor="primary.light" color="secondary.contrastText">
             <span className={classes.price}>{amount}</span>
             <FormControl className={classes.formControl}>
                 <Select

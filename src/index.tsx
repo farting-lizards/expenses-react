@@ -12,14 +12,20 @@ const theme = createMuiTheme({
     palette: {
         type: 'dark',
         primary: {
-            main: '#D60E3C',
-            light: '#C03757',
+            main: '#2C2F62',
+            light: '#8F3CFF',
         },
         secondary: {
-            main: '#242424',
+            main: '#57C8EB',
+            light: '#57C8EB',
+            dark: '#FF3C82',
+            contrastText: '#ffffff',
         },
         background: {
-            default: '#000000',
+            default: '#191B43',
+        },
+        text: {
+            primary: '#ffffff',
         },
     },
     typography: {

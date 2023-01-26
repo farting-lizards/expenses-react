@@ -1,22 +1,17 @@
 import Box from '@material-ui/core/Box';
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import React, { useEffect, useState } from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
-import { deleteExpense, euroToChf } from '../redux/reducers/expenses';
-import { Expense } from '../types';
-import './DateRangePickerStyles.css';
-import LocalMallOutlinedIcon from '@material-ui/icons/LocalMallOutlined';
-import { CategoryIcon } from './CategoryIcon';
-import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
-import { setEmitFlags } from 'typescript';
-import { EditExpenseDialog } from './EditExpenseDialog';
+import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
+import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
+import React, { useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
+import { deleteExpense } from '../redux/reducers/expenses';
+import { Expense } from '../types';
+import { CategoryIcon } from './CategoryIcon';
+import './DateRangePickerStyles.css';
+import { EditExpenseDialog } from './EditExpenseDialog';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -71,7 +66,7 @@ export function ExpenseItem({ expense }: { expense: Expense }): JSX.Element {
     };
 
     return (
-        <Box className={classes.container} bgcolor="secondary.main" color="secondary.contrastText" key={expense.id}>
+        <Box className={classes.container} bgcolor="primary.main" color="primary.contrastText" key={expense.id}>
             <div className={classes.left}>
                 <CategoryIcon category={expense.category} />
                 <div className={classes.expenseText}>
