@@ -1,5 +1,5 @@
 import { AnyAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Expense, NewExpense, Summary } from '../../types';
+import { Expense, ExpenseToReview, NewExpense, Summary } from '../../types';
 import { client } from '../../utilities/client';
 import { RootState } from '../store';
 
@@ -18,6 +18,12 @@ const initialState = {
     expenses: [] as Expense[],
     status: Status.IDLE,
     error: null,
+
+    expensesToReview: [] as ExpenseToReview[],
+    importExpensesStatus: Status.IDLE,
+    latestImportedExpenseCount: 0,
+    importExpensesError: null,
+
     fromDate: FIRST_DAY_OF_MONTH,
     toDate: LAST_DAY_OF_MONTH,
 };
@@ -26,6 +32,14 @@ export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async ()
     const response = await client.get('/api/expenses');
     return response;
 });
+
+export const fetchExpensesToReview = createAsyncThunk(
+    'expenses/fetchExpensesToReview',
+    async (payload: { fromDate: string; toDate: string }) => {
+        const response = await client.get(`/api/import-expenses?fromDate=${payload.fromDate}&toDate=${payload.toDate}`);
+        return response;
+    }
+);
 
 export const addExpense = createAsyncThunk(
     'expenses/addExpense',
@@ -70,6 +84,10 @@ const expensesSlice = createSlice({
         updateToDate(state, action: { type: string; payload: string }) {
             state.toDate = action.payload;
         },
+        resetImportExpenseState(state) {
+            state.importExpensesError = null;
+            state.importExpensesStatus = Status.IDLE;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase('expenses/fetchExpenses/pending', (state) => {
@@ -83,6 +101,20 @@ const expensesSlice = createSlice({
             state.status = Status.FAILED;
             state.error = action.error.message;
         });
+
+        builder.addCase('expenses/fetchExpensesToReview/pending', (state) => {
+            state.importExpensesStatus = Status.LOADING;
+        });
+        builder.addCase('expenses/fetchExpensesToReview/fulfilled', (state, action: AnyAction) => {
+            state.importExpensesStatus = Status.COMPLETED;
+            state.latestImportedExpenseCount = action.payload.length;
+            state.expensesToReview = state.expensesToReview.concat(action.payload);
+        });
+        builder.addCase('expenses/fetchExpensesToReview/rejected', (state, action: AnyAction) => {
+            state.importExpensesStatus = Status.FAILED;
+            state.importExpensesError = action.error.message;
+        });
+
         builder.addCase('expenses/addExpense/fulfilled', (state, action: AnyAction) => {
             state.expenses.unshift(action.payload);
         });
@@ -95,7 +127,7 @@ const expensesSlice = createSlice({
     },
 });
 
-export const { expenseUpdated, updateFromDate, updateToDate } = expensesSlice.actions;
+export const { expenseUpdated, updateFromDate, updateToDate, resetImportExpenseState } = expensesSlice.actions;
 
 export default expensesSlice.reducer;
 

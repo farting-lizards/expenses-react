@@ -5,6 +5,7 @@ import { DateRangePicker } from './components/DateRangePicker';
 import { TotalAmount } from './components/TotalAmount';
 import {
     fetchExpenses,
+    fetchExpensesToReview,
     selectAmountInEuros,
     selectExpensesInRange,
     selectSummary,
@@ -21,6 +22,7 @@ import { SummaryDialog } from './components/SummaryDialog';
 import { SvgIcon } from '@material-ui/core';
 import { AddIcon } from './assets/AddIcon';
 import { BottomNavBar } from './components/BottomNavBar';
+import { ImportExpensesDialog } from './components/ImportExpensesDialog';
 
 const useStyles = makeStyles((theme) => ({
     buttonContainer: {
@@ -47,10 +49,12 @@ function ExpensesApp(): JSX.Element {
     const fromDate = useSelector((state: RootState) => state.expenses.fromDate);
     const toDate = useSelector((state: RootState) => state.expenses.toDate);
     const error = useSelector((state: RootState) => state.expenses.error);
+
     const classes = useStyles();
 
     const [openAddExpense, setOpenAddExpense] = useState(false);
     const [openSummary, setOpenSummary] = useState(false);
+    const [openImportDialog, setOpenImportDialog] = useState(false);
 
     useEffect(() => {
         if (expensesStatus === Status.IDLE) {
@@ -84,20 +88,15 @@ function ExpensesApp(): JSX.Element {
 
             <AddExpenseDialog open={openAddExpense} handleClose={() => setOpenAddExpense(false)} />
             <SummaryDialog open={openSummary} handleClose={() => setOpenSummary(false)} summary={summary} />
+            <ImportExpensesDialog open={openImportDialog} handleClose={() => setOpenImportDialog(false)} />
 
-            {/* <div className={classes.buttonContainer}>
-                <Button variant="contained" color="primary" className={classes.button} onClick={() => setOpenSummary(true)}>
-                    Summary
-                </Button>
-                <Button variant="contained" color="primary" className={classes.button} onClick={handleOpenAddExpense}>
-                    Add
-                </Button>
-            </div> */}
             <BottomNavBar
                 openAddExpense={() => setOpenAddExpense(true)}
                 addExpenseActive={openAddExpense}
                 openSummary={() => setOpenSummary(true)}
                 summaryActive={openSummary}
+                openImportExpenses={() => setOpenImportDialog(true)}
+                importExpensesActive={openImportDialog}
             />
         </div>
     );

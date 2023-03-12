@@ -17,6 +17,7 @@ import { CategoryIcon } from './CategoryIcon';
 const useStyles = makeStyles((theme) => ({
     paper: {
         background: theme.palette.primary.dark,
+        minHeight: '240px',
     },
     flex: {
         display: 'flex',
@@ -49,6 +50,12 @@ const useStyles = makeStyles((theme) => ({
             lineHeight: '1em',
             marginLeft: '12px',
         },
+    },
+    actionButton: {
+        width: '100%',
+    },
+    dialogActions: {
+        justifyContent: 'center',
     },
 }));
 
@@ -254,8 +261,8 @@ export const AddExpenseDialog = ({ open, handleClose }: { open: boolean; handleC
                     ))}
                 </TextField>
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleAddExpense} color="secondary">
+            <DialogActions className={classes.dialogActions}>
+                <Button onClick={handleAddExpense} color="secondary" className={classes.actionButton}>
                     Save
                 </Button>
             </DialogActions>

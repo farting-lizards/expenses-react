@@ -10,6 +10,8 @@ interface BottomNavBarProps {
     addExpenseActive: boolean;
     openSummary: () => void;
     summaryActive: boolean;
+    openImportExpenses: () => void;
+    importExpensesActive: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +51,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const BottomNavBar = ({ openAddExpense, addExpenseActive, openSummary, summaryActive }: BottomNavBarProps): JSX.Element => {
+export const BottomNavBar = ({
+    openAddExpense,
+    addExpenseActive,
+    openSummary,
+    summaryActive,
+    openImportExpenses,
+    importExpensesActive,
+}: BottomNavBarProps): JSX.Element => {
     const classes = useStyles();
     const theme = useTheme();
 
@@ -57,7 +66,12 @@ export const BottomNavBar = ({ openAddExpense, addExpenseActive, openSummary, su
         <nav className={classes.container}>
             <ol className={classes.menu}>
                 <li className={classes.option}>
-                    <ImportIcon fontSize="small" className={classes.iconBackground} />
+                    <ImportIcon
+                        fontSize="small"
+                        className={classes.iconBackground}
+                        onClick={openImportExpenses}
+                        strokecolor={importExpensesActive ? theme.palette.secondary.main : theme.palette.primary.contrastText}
+                    />
                     <span className={classes.label}>Import</span>
                 </li>
                 <li className={classes.option}>

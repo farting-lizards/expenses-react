@@ -11,6 +11,16 @@ export interface Expense {
     };
 }
 
+export interface ExpenseToReview {
+    externalId: string;
+    date: number;
+    amount: number;
+    currency: 'EUR' | 'CHF';
+    externalCategory: string;
+    description: string;
+    merchantName: string;
+}
+
 export interface NewExpense {
     amount: number;
     currency: string;

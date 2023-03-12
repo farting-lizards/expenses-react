@@ -7,6 +7,7 @@ import React from 'react';
 const useStyles = makeStyles((theme) => ({
     paper: {
         background: theme.palette.primary.dark,
+        minHeight: '240px',
     },
     container: {
         display: 'flex',

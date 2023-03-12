@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { unstable_createMuiStrictModeTheme as createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 
 const font = "'Baloo Bhaina 2', cursive";
 const theme = createMuiTheme({
