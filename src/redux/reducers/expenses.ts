@@ -36,7 +36,7 @@ export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async ()
 export const fetchExpensesToReview = createAsyncThunk(
     'expenses/fetchExpensesToReview',
     async (payload: { fromDate: string; toDate: string }) => {
-        const response = await client.get(`/api/import-expenses?fromDate=${payload.fromDate}&toDate=${payload.toDate}`);
+        const response = await client.get(`/api/discover?fromDate=${payload.fromDate}&toDate=${payload.toDate}`);
         return response;
     }
 );
@@ -107,8 +107,7 @@ const expensesSlice = createSlice({
         });
         builder.addCase('expenses/fetchExpensesToReview/fulfilled', (state, action: AnyAction) => {
             state.importExpensesStatus = Status.COMPLETED;
-            state.latestImportedExpenseCount = action.payload.length;
-            state.expensesToReview = state.expensesToReview.concat(action.payload);
+            state.latestImportedExpenseCount = action.payload;
         });
         builder.addCase('expenses/fetchExpensesToReview/rejected', (state, action: AnyAction) => {
             state.importExpensesStatus = Status.FAILED;

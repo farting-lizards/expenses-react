@@ -1,3 +1,4 @@
+// Returns string of format 'YYYY-MM-DD'
 export const toSimpleDateString = (d: Date): string => {
-    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    return d.toISOString().split('T')[0];
 };

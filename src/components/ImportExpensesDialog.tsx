@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchExpensesToReview, Status, resetImportExpenseState } from '../redux/reducers/expenses';
 import { toSimpleDateString } from '../utilities/date';
 import { RootState } from '../redux/store';
+import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -36,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.error.main,
         textAlign: 'center',
     },
+    success: {
+        color: green[500],
+        textAlign: 'center',
+    },
 }));
 
 interface ImportExpensesDialogProps {
@@ -51,11 +56,11 @@ export const ImportExpensesDialog = ({ open, handleClose }: ImportExpensesDialog
     const status = useSelector((state: RootState) => state.expenses.importExpensesStatus);
 
     const today = new Date();
-    const monthFromToday = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+    const aMonthAgo = new Date(today.valueOf() - 30 * 24 * 60 * 60 * 1000);
 
     const classes = useStyles();
-    const [fromDate, setFromDate] = useState(today);
-    const [toDate, setToDate] = useState(monthFromToday);
+    const [fromDate, setFromDate] = useState(aMonthAgo);
+    const [toDate, setToDate] = useState(today);
 
     function onImportClick() {
         dispatch(fetchExpensesToReview({ fromDate: toSimpleDateString(fromDate), toDate: toSimpleDateString(toDate) }));
@@ -70,7 +75,7 @@ export const ImportExpensesDialog = ({ open, handleClose }: ImportExpensesDialog
     if (status === Status.FAILED) {
         errorOrSuccessText = <div className={classes.error}>ERROR: {error}</div>;
     } else if (status === Status.COMPLETED) {
-        errorOrSuccessText = <div color="secondary">{latestImportedExpenses} new expenses imported.</div>;
+        errorOrSuccessText = <div className={classes.success}>{latestImportedExpenses} new expenses imported.</div>;
     } else {
         errorOrSuccessText = '';
     }
