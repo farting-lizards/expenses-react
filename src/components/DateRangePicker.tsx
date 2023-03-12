@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        borderRadius: '0 0 8% 8%',
+        borderRadius: '0 0 12% 12%',
     },
     date: {
         background: 'transparent',

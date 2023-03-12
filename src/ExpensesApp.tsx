@@ -18,6 +18,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ExpenseItem } from './components/ExpenseItem';
 import { AddExpenseDialog } from './components/AddExpenseDialog';
 import { SummaryDialog } from './components/SummaryDialog';
+import { SvgIcon } from '@material-ui/core';
+import { AddIcon } from './assets/AddIcon';
+import { BottomNavBar } from './components/BottomNavBar';
 
 const useStyles = makeStyles((theme) => ({
     buttonContainer: {
@@ -83,17 +86,19 @@ function ExpensesApp(): JSX.Element {
         <div>
             <DateRangePicker fromDate={fromDate} toDate={toDate} onFromDateChanged={onFromDateChanged} onToDateChanged={onToDateChanged} />
             <TotalAmount amountInEuros={amountInEuros} />
-            <div className={classes.buttonContainer}>
+            <AddExpenseDialog open={openAddExpense} handleClose={() => setOpenAddExpense(false)} />
+
+            {/* <div className={classes.buttonContainer}>
                 <Button variant="contained" color="primary" className={classes.button} onClick={() => setOpenSummary(true)}>
                     Summary
                 </Button>
                 <Button variant="contained" color="primary" className={classes.button} onClick={handleOpenAddExpense}>
                     Add
                 </Button>
-                <AddExpenseDialog open={openAddExpense} handleClose={handleCloseAddExpense} />
                 <SummaryDialog open={openSummary} handleClose={() => setOpenSummary(false)} summary={summary} />
-            </div>
+            </div> */}
             <div className={classes.content}>{content}</div>
+            <BottomNavBar openAddExpense={() => setOpenAddExpense(true)} />
         </div>
     );
 }
