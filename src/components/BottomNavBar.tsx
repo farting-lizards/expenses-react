@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { AddIcon } from '../assets/AddIcon';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ImportIcon } from '../assets/ImportIcon';
 import { ReviewIcon } from '../assets/ReviewIcon';
 import { SummaryIcon } from '../assets/SummaryIcon';
+import { pink } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -42,8 +43,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const BottomNavBar = ({ openAddExpense }: { openAddExpense: () => void }): JSX.Element => {
+export const BottomNavBar = ({
+    openAddExpense,
+    addExpenseActive,
+}: {
+    openAddExpense: () => void;
+    addExpenseActive: boolean;
+}): JSX.Element => {
     const classes = useStyles();
+    const theme = useTheme();
 
     return (
         <nav className={classes.container}>
@@ -53,7 +61,12 @@ export const BottomNavBar = ({ openAddExpense }: { openAddExpense: () => void })
                     <span className={classes.label}>Import</span>
                 </li>
                 <li className={classes.option}>
-                    <AddIcon fontSize="small" className={classes.iconBackground} onClick={openAddExpense} />
+                    <AddIcon
+                        fontSize="small"
+                        className={classes.iconBackground}
+                        strokecolor={addExpenseActive ? theme.palette.secondary.main : theme.palette.primary.contrastText}
+                        onClick={openAddExpense}
+                    />
                     <span className={classes.label}>Add</span>
                 </li>
                 <li className={classes.option}>

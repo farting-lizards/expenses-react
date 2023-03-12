@@ -50,13 +50,6 @@ function ExpensesApp(): JSX.Element {
     const classes = useStyles();
 
     const [openAddExpense, setOpenAddExpense] = useState(false);
-    const handleOpenAddExpense = () => {
-        setOpenAddExpense(true);
-    };
-    const handleCloseAddExpense = () => {
-        setOpenAddExpense(false);
-    };
-
     const [openSummary, setOpenSummary] = useState(false);
 
     useEffect(() => {
@@ -98,7 +91,7 @@ function ExpensesApp(): JSX.Element {
                 <SummaryDialog open={openSummary} handleClose={() => setOpenSummary(false)} summary={summary} />
             </div> */}
             <div className={classes.content}>{content}</div>
-            <BottomNavBar openAddExpense={() => setOpenAddExpense(true)} />
+            <BottomNavBar openAddExpense={() => setOpenAddExpense(true)} addExpenseActive={openAddExpense} />
         </div>
     );
 }
