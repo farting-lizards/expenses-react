@@ -79,7 +79,11 @@ function ExpensesApp(): JSX.Element {
         <div>
             <DateRangePicker fromDate={fromDate} toDate={toDate} onFromDateChanged={onFromDateChanged} onToDateChanged={onToDateChanged} />
             <TotalAmount amountInEuros={amountInEuros} />
+
+            <div className={classes.content}>{content}</div>
+
             <AddExpenseDialog open={openAddExpense} handleClose={() => setOpenAddExpense(false)} />
+            <SummaryDialog open={openSummary} handleClose={() => setOpenSummary(false)} summary={summary} />
 
             {/* <div className={classes.buttonContainer}>
                 <Button variant="contained" color="primary" className={classes.button} onClick={() => setOpenSummary(true)}>
@@ -88,10 +92,13 @@ function ExpensesApp(): JSX.Element {
                 <Button variant="contained" color="primary" className={classes.button} onClick={handleOpenAddExpense}>
                     Add
                 </Button>
-                <SummaryDialog open={openSummary} handleClose={() => setOpenSummary(false)} summary={summary} />
             </div> */}
-            <div className={classes.content}>{content}</div>
-            <BottomNavBar openAddExpense={() => setOpenAddExpense(true)} addExpenseActive={openAddExpense} />
+            <BottomNavBar
+                openAddExpense={() => setOpenAddExpense(true)}
+                addExpenseActive={openAddExpense}
+                openSummary={() => setOpenSummary(true)}
+                summaryActive={openSummary}
+            />
         </div>
     );
 }

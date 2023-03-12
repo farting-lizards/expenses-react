@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AddIcon } from '../assets/AddIcon';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ImportIcon } from '../assets/ImportIcon';
 import { ReviewIcon } from '../assets/ReviewIcon';
 import { SummaryIcon } from '../assets/SummaryIcon';
-import { pink } from '@material-ui/core/colors';
+
+interface BottomNavBarProps {
+    openAddExpense: () => void;
+    addExpenseActive: boolean;
+    openSummary: () => void;
+    summaryActive: boolean;
+}
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -43,13 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const BottomNavBar = ({
-    openAddExpense,
-    addExpenseActive,
-}: {
-    openAddExpense: () => void;
-    addExpenseActive: boolean;
-}): JSX.Element => {
+export const BottomNavBar = ({ openAddExpense, addExpenseActive, openSummary, summaryActive }: BottomNavBarProps): JSX.Element => {
     const classes = useStyles();
     const theme = useTheme();
 
@@ -74,7 +74,12 @@ export const BottomNavBar = ({
                     <span className={classes.label}>Review</span>
                 </li>
                 <li className={classes.option}>
-                    <SummaryIcon fontSize="small" className={classes.iconBackground} />
+                    <SummaryIcon
+                        fontSize="small"
+                        className={classes.iconBackground}
+                        onClick={openSummary}
+                        strokecolor={summaryActive ? theme.palette.secondary.main : theme.palette.primary.contrastText}
+                    />
                     <span className={classes.label}>Summary</span>
                 </li>
             </ol>
