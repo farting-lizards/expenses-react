@@ -23,6 +23,7 @@ import { SvgIcon } from '@material-ui/core';
 import { AddIcon } from './assets/AddIcon';
 import { BottomNavBar } from './components/BottomNavBar';
 import { ImportExpensesDialog } from './components/ImportExpensesDialog';
+import { Outlet } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     buttonContainer: {

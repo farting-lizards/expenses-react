@@ -45,7 +45,28 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: '1em',
         fontWeight: 400,
     },
+    accountTag: {
+        display: 'inline-block',
+        width: '0.75em',
+        height: '0.75em',
+        marginLeft: '10px',
+        borderRadius: '50%',
+    },
 }));
+
+const COLORS = {
+    DINI: '#57C8EB',
+    DAVID: '#FF3C82',
+    JOINT: '#6FE9A1',
+};
+
+const AccountColor: { [key: number]: string } = {
+    0: COLORS.JOINT,
+    1: COLORS.DAVID,
+    2: COLORS.DINI,
+    3: COLORS.DAVID,
+    4: COLORS.DINI,
+};
 
 export function ExpenseItem({ expense }: { expense: Expense }): JSX.Element {
     const classes = useStyles();
@@ -70,7 +91,10 @@ export function ExpenseItem({ expense }: { expense: Expense }): JSX.Element {
             <div className={classes.left}>
                 <CategoryIcon category={expense.category} />
                 <div className={classes.expenseText}>
-                    <div className={classes.description}>{expense.description}</div>
+                    <div className={classes.description}>
+                        {expense.description}
+                        <span className={classes.accountTag} style={{ background: AccountColor[expense.account.id] }}></span>
+                    </div>
                     <div className={classes.category}>{expense.category}</div>
                 </div>
             </div>
