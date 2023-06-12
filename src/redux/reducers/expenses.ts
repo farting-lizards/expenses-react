@@ -24,6 +24,10 @@ const initialState = {
     latestImportedExpenseCount: 0,
     importExpensesError: null,
 
+    expensesToReviewCount: 0,
+    expensesToReviewCountStatus: Status.IDLE,
+    expensesToReviewCountError: null,
+
     fromDate: FIRST_DAY_OF_MONTH,
     toDate: LAST_DAY_OF_MONTH,
 };
@@ -33,13 +37,15 @@ export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async ()
     return response;
 });
 
-export const fetchExpensesToReview = createAsyncThunk(
-    'expenses/fetchExpensesToReview',
-    async (payload: { fromDate: string; toDate: string }) => {
-        const response = await client.get(`/api/discover?fromDate=${payload.fromDate}&toDate=${payload.toDate}`);
-        return response;
-    }
-);
+export const fetchExpensesToReviewCount = createAsyncThunk('expenses/fetchExpenses', async () => {
+    const response = await client.get('/api/expenses-in-review/count');
+    return response;
+});
+
+export const importExpenses = createAsyncThunk('expenses/fetchExpensesToReview', async (payload: { fromDate: string; toDate: string }) => {
+    const response = await client.get(`/api/discover?fromDate=${payload.fromDate}&toDate=${payload.toDate}`);
+    return response;
+});
 
 export const addExpense = createAsyncThunk(
     'expenses/addExpense',
@@ -102,16 +108,28 @@ const expensesSlice = createSlice({
             state.error = action.error.message;
         });
 
-        builder.addCase('expenses/fetchExpensesToReview/pending', (state) => {
+        builder.addCase('expenses/importExpenses/pending', (state) => {
             state.importExpensesStatus = Status.LOADING;
         });
-        builder.addCase('expenses/fetchExpensesToReview/fulfilled', (state, action: AnyAction) => {
+        builder.addCase('expenses/importExpenses/fulfilled', (state, action: AnyAction) => {
             state.importExpensesStatus = Status.COMPLETED;
             state.latestImportedExpenseCount = action.payload;
         });
-        builder.addCase('expenses/fetchExpensesToReview/rejected', (state, action: AnyAction) => {
+        builder.addCase('expenses/importExpenses/rejected', (state, action: AnyAction) => {
             state.importExpensesStatus = Status.FAILED;
             state.importExpensesError = action.error.message;
+        });
+
+        builder.addCase('expenses/fetchExpensesToReviewCount/pending', (state) => {
+            state.expensesToReviewCountStatus = Status.LOADING;
+        });
+        builder.addCase('expenses/fetchExpensesToReviewCount/fulfilled', (state, action: AnyAction) => {
+            state.expensesToReviewCountStatus = Status.COMPLETED;
+            state.expensesToReviewCount = action.payload;
+        });
+        builder.addCase('expenses/fetchExpensesToReviewCount/rejected', (state, action: AnyAction) => {
+            state.expensesToReviewCountStatus = Status.FAILED;
+            state.expensesToReviewCountError = action.error.message;
         });
 
         builder.addCase('expenses/addExpense/fulfilled', (state, action: AnyAction) => {

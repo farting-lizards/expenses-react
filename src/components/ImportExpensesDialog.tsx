@@ -5,7 +5,7 @@ import { Summary } from '../types';
 import React, { useState } from 'react';
 import { format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchExpensesToReview, Status, resetImportExpenseState } from '../redux/reducers/expenses';
+import { importExpenses, Status, resetImportExpenseState } from '../redux/reducers/expenses';
 import { toSimpleDateString } from '../utilities/date';
 import { RootState } from '../redux/store';
 import { green } from '@material-ui/core/colors';
@@ -63,7 +63,7 @@ export const ImportExpensesDialog = ({ open, handleClose }: ImportExpensesDialog
     const [toDate, setToDate] = useState(today);
 
     function onImportClick() {
-        dispatch(fetchExpensesToReview({ fromDate: toSimpleDateString(fromDate), toDate: toSimpleDateString(toDate) }));
+        dispatch(importExpenses({ fromDate: toSimpleDateString(fromDate), toDate: toSimpleDateString(toDate) }));
     }
 
     function closeDialog() {

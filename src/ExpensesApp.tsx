@@ -5,7 +5,8 @@ import { DateRangePicker } from './components/DateRangePicker';
 import { TotalAmount } from './components/TotalAmount';
 import {
     fetchExpenses,
-    fetchExpensesToReview,
+    fetchExpensesToReviewCount,
+    importExpenses,
     selectAmountInEuros,
     selectExpensesInRange,
     selectSummary,
@@ -47,6 +48,8 @@ function ExpensesApp(): JSX.Element {
     const amountInEuros = useSelector(selectAmountInEuros);
     const summary = useSelector(selectSummary);
     const expensesStatus = useSelector((state: RootState) => state.expenses.status);
+    const expensesToReviewCountStatus = useSelector((state: RootState) => state.expenses.expensesToReviewCountStatus);
+
     const fromDate = useSelector((state: RootState) => state.expenses.fromDate);
     const toDate = useSelector((state: RootState) => state.expenses.toDate);
     const error = useSelector((state: RootState) => state.expenses.error);
@@ -62,6 +65,12 @@ function ExpensesApp(): JSX.Element {
             dispatch(fetchExpenses());
         }
     }, [expensesStatus, dispatch]);
+
+    useEffect(() => {
+        if (expensesToReviewCountStatus === Status.IDLE) {
+            dispatch(fetchExpensesToReviewCount());
+        }
+    }, [expensesToReviewCountStatus, dispatch]);
 
     let content;
     if (expensesStatus === Status.LOADING) {
