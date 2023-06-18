@@ -14,6 +14,7 @@ interface BottomNavBarProps {
     openImportExpenses: () => void;
     importExpensesActive: boolean;
     expensesToReviewCount: number;
+    onStartReview: () => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -64,6 +65,7 @@ export const BottomNavBar = ({
     openImportExpenses,
     importExpensesActive,
     expensesToReviewCount,
+    onStartReview,
 }: BottomNavBarProps): JSX.Element => {
     const classes = useStyles();
     const theme = useTheme();
@@ -91,7 +93,7 @@ export const BottomNavBar = ({
                 </li>
                 <li className={classes.option}>
                     <Badge badgeContent={expensesToReviewCount} classes={{ badge: classes.badge }}>
-                        <ReviewIcon fontSize="small" className={classes.iconBackground} />
+                        <ReviewIcon fontSize="small" className={classes.iconBackground} onClick={onStartReview} />
                     </Badge>
                     <span className={classes.label}>Review</span>
                 </li>

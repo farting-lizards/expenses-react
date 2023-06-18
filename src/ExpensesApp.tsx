@@ -10,6 +10,7 @@ import {
     selectAmountInEuros,
     selectExpensesInRange,
     selectSummary,
+    startReview,
     Status,
     updateFromDate,
     updateToDate,
@@ -90,6 +91,10 @@ function ExpensesApp(): JSX.Element {
         dispatch(updateToDate(newToDate.toISOString()));
     }
 
+    const onStartReview = () => {
+        dispatch(startReview());
+    };
+
     return (
         <div>
             <DateRangePicker fromDate={fromDate} toDate={toDate} onFromDateChanged={onFromDateChanged} onToDateChanged={onToDateChanged} />
@@ -109,6 +114,7 @@ function ExpensesApp(): JSX.Element {
                 openImportExpenses={() => setOpenImportDialog(true)}
                 importExpensesActive={openImportDialog}
                 expensesToReviewCount={expensesToReviewCount}
+                onStartReview={onStartReview}
             />
         </div>
     );

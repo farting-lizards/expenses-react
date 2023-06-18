@@ -51,6 +51,11 @@ export const importExpenses = createAsyncThunk(
     }
 );
 
+export const startReview = createAsyncThunk('expenses/startReview', async () => {
+    const response = await client.get(`/api/expenses-in-review/start-review`);
+    return response;
+});
+
 export const addExpense = createAsyncThunk(
     'expenses/addExpense',
     async (payload: { expense: NewExpense }): Promise<Expense> => {

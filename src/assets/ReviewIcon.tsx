@@ -1,8 +1,7 @@
+import { SvgIcon, SvgIconProps } from '@material-ui/core';
 import React from 'react';
-import { SvgIcon, SvgIconTypeMap } from '@material-ui/core';
-import { DefaultComponentProps } from '@material-ui/core/OverridableComponent';
 
-export function ReviewIcon(props: DefaultComponentProps<SvgIconTypeMap<Record<string, string>, 'svg'>>): JSX.Element {
+export function ReviewIcon(props: SvgIconProps): JSX.Element {
     return (
         <SvgIcon {...props} viewBox="0 0 24 14">
             <path
