@@ -37,15 +37,19 @@ export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async ()
     return response;
 });
 
-export const fetchExpensesToReviewCount = createAsyncThunk('expenses/fetchExpenses', async () => {
+export const fetchExpensesToReviewCount = createAsyncThunk('expenses/fetchExpensesToReviewCount', async () => {
     const response = await client.get('/api/expenses-in-review/count');
     return response;
 });
 
-export const importExpenses = createAsyncThunk('expenses/fetchExpensesToReview', async (payload: { fromDate: string; toDate: string }) => {
-    const response = await client.get(`/api/discover?fromDate=${payload.fromDate}&toDate=${payload.toDate}`);
-    return response;
-});
+export const importExpenses = createAsyncThunk(
+    'expenses/importExpenses',
+    async (payload: { fromDate: string; toDate: string }, thunkApi) => {
+        const response = await client.get(`/api/expenses-in-review/discover?fromDate=${payload.fromDate}&toDate=${payload.toDate}`);
+        thunkApi.dispatch(fetchExpensesToReviewCount());
+        return response;
+    }
+);
 
 export const addExpense = createAsyncThunk(
     'expenses/addExpense',

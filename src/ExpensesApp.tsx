@@ -49,6 +49,7 @@ function ExpensesApp(): JSX.Element {
     const summary = useSelector(selectSummary);
     const expensesStatus = useSelector((state: RootState) => state.expenses.status);
     const expensesToReviewCountStatus = useSelector((state: RootState) => state.expenses.expensesToReviewCountStatus);
+    const expensesToReviewCount = useSelector((state: RootState) => state.expenses.expensesToReviewCount);
 
     const fromDate = useSelector((state: RootState) => state.expenses.fromDate);
     const toDate = useSelector((state: RootState) => state.expenses.toDate);
@@ -107,6 +108,7 @@ function ExpensesApp(): JSX.Element {
                 summaryActive={openSummary}
                 openImportExpenses={() => setOpenImportDialog(true)}
                 importExpensesActive={openImportDialog}
+                expensesToReviewCount={expensesToReviewCount}
             />
         </div>
     );

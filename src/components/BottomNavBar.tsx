@@ -4,6 +4,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ImportIcon } from '../assets/ImportIcon';
 import { ReviewIcon } from '../assets/ReviewIcon';
 import { SummaryIcon } from '../assets/SummaryIcon';
+import { Badge } from '@material-ui/core';
 
 interface BottomNavBarProps {
     openAddExpense: () => void;
@@ -12,6 +13,7 @@ interface BottomNavBarProps {
     summaryActive: boolean;
     openImportExpenses: () => void;
     importExpensesActive: boolean;
+    expensesToReviewCount: number;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
     label: {
         fontSize: '12px',
     },
+    badge: {
+        background: theme.palette.primary.light,
+    },
 }));
 
 export const BottomNavBar = ({
@@ -58,6 +63,7 @@ export const BottomNavBar = ({
     summaryActive,
     openImportExpenses,
     importExpensesActive,
+    expensesToReviewCount,
 }: BottomNavBarProps): JSX.Element => {
     const classes = useStyles();
     const theme = useTheme();
@@ -84,7 +90,9 @@ export const BottomNavBar = ({
                     <span className={classes.label}>Add</span>
                 </li>
                 <li className={classes.option}>
-                    <ReviewIcon fontSize="small" className={classes.iconBackground} />
+                    <Badge badgeContent={expensesToReviewCount} classes={{ badge: classes.badge }}>
+                        <ReviewIcon fontSize="small" className={classes.iconBackground} />
+                    </Badge>
                     <span className={classes.label}>Review</span>
                 </li>
                 <li className={classes.option}>
