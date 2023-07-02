@@ -5,6 +5,7 @@ import { ImportIcon } from '../assets/ImportIcon';
 import { ReviewIcon } from '../assets/ReviewIcon';
 import { SummaryIcon } from '../assets/SummaryIcon';
 import { Badge } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 interface BottomNavBarProps {
     openAddExpense: () => void;
@@ -51,9 +52,11 @@ const useStyles = makeStyles((theme) => ({
     },
     label: {
         fontSize: '12px',
+        color: 'white',
     },
     badge: {
         background: theme.palette.primary.light,
+        color: 'white',
     },
 }));
 
@@ -92,10 +95,12 @@ export const BottomNavBar = ({
                     <span className={classes.label}>Add</span>
                 </li>
                 <li className={classes.option}>
-                    <Badge badgeContent={expensesToReviewCount} classes={{ badge: classes.badge }}>
-                        <ReviewIcon fontSize="small" className={classes.iconBackground} onClick={onStartReview} />
-                    </Badge>
-                    <span className={classes.label}>Review</span>
+                    <Link to="/review">
+                        <Badge badgeContent={expensesToReviewCount} classes={{ badge: classes.badge }}>
+                            <ReviewIcon fontSize="small" className={classes.iconBackground} onClick={onStartReview} />
+                        </Badge>
+                        <span className={classes.label}>Review</span>
+                    </Link>
                 </li>
                 <li className={classes.option}>
                     <SummaryIcon

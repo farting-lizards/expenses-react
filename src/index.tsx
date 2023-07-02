@@ -8,6 +8,7 @@ import { store } from './redux/store';
 import { unstable_createMuiStrictModeTheme as createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { ReviewExpenses } from './components/ReviewExpenses';
+import { Root } from './Root';
 
 const font = "'Baloo Bhaina 2', cursive";
 const theme = createMuiTheme({
@@ -38,8 +39,12 @@ const theme = createMuiTheme({
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <ExpensesApp />,
+        element: <Root />,
         children: [
+            {
+                path: '',
+                element: <ExpensesApp />,
+            },
             {
                 path: 'review',
                 element: <ReviewExpenses />,

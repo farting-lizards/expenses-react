@@ -1,4 +1,4 @@
-import { AnyAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk, createSlice, isAsyncThunkAction } from '@reduxjs/toolkit';
 import { Expense, ExpenseToReview, NewExpense, Summary } from '../../types';
 import { client } from '../../utilities/client';
 import { RootState } from '../store';
@@ -19,14 +19,15 @@ const initialState = {
     status: Status.IDLE,
     error: null,
 
-    expensesToReview: [] as ExpenseToReview[],
     importExpensesStatus: Status.IDLE,
     latestImportedExpenseCount: 0,
     importExpensesError: null,
 
+    expensesToReview: [] as ExpenseToReview[],
     expensesToReviewCount: 0,
     expensesToReviewCountStatus: Status.IDLE,
     expensesToReviewCountError: null,
+    releaseExpensesOnRouteChange: [] as string[],
 
     fromDate: FIRST_DAY_OF_MONTH,
     toDate: LAST_DAY_OF_MONTH,
@@ -55,6 +56,16 @@ export const startReview = createAsyncThunk('expenses/startReview', async () => 
     const response = await client.get(`/api/expenses-in-review/start-review`);
     return response;
 });
+
+export const releaseExpensesInReview = createAsyncThunk(
+    'expenses/deleteExpense',
+    async (_, thunkApi): Promise<number> => {
+        const state = thunkApi.getState();
+        console.log('Release exp', (state as RootState).expenses.releaseExpensesOnRouteChange);
+        const response = await client.post(`/api/expenses-in-review/release`, (state as RootState).expenses.releaseExpensesOnRouteChange);
+        return response;
+    }
+);
 
 export const addExpense = createAsyncThunk(
     'expenses/addExpense',
@@ -139,6 +150,11 @@ const expensesSlice = createSlice({
         builder.addCase('expenses/fetchExpensesToReviewCount/rejected', (state, action: AnyAction) => {
             state.expensesToReviewCountStatus = Status.FAILED;
             state.expensesToReviewCountError = action.error.message;
+        });
+
+        builder.addCase('expenses/startReview/fulfilled', (state, action: AnyAction) => {
+            state.releaseExpensesOnRouteChange.push(...action.payload.map((e: ExpenseToReview) => e.externalId));
+            state.expensesToReview.push(action.payload);
         });
 
         builder.addCase('expenses/addExpense/fulfilled', (state, action: AnyAction) => {
