@@ -1,5 +1,5 @@
 import { Button, Card, CardActions, MenuItem, TextField, makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Currency, ExpenseToReview } from '../types';
 import { accounts, categories, currencies, wiseToCustomCategory } from './EditExpenseDialog';
 import { useDispatch } from 'react-redux';
@@ -13,7 +13,6 @@ type Props = {
 };
 
 export const ExpenseInReview = ({ expenseInReview, setNextExpenseIndex }: Props): JSX.Element => {
-    console.log('Expenses In Review', expenseInReview);
     const classes = useStyles();
     const [description, setDescription] = useState(expenseInReview.description);
     const [currency, setCurrency] = useState<Currency>(expenseInReview.currency);

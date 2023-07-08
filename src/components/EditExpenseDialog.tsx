@@ -20,7 +20,7 @@ import { editExpense } from '../redux/reducers/expenses';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        background: theme.palette.secondary.main,
+        background: theme.palette.primary.main,
     },
     flex: {
         display: 'flex',
@@ -101,6 +101,10 @@ export const categories = [
     {
         value: 'groceries',
         label: 'Groceries',
+    },
+    {
+        value: 'house',
+        label: 'House',
     },
     {
         value: 'plants',

@@ -22,6 +22,9 @@ const useStyles = makeStyles(() => ({
     content: {
         margin: '24px 36px',
     },
+    container: {
+        marginBottom: '100px',
+    },
 }));
 
 function ExpensesApp(): JSX.Element {
@@ -72,7 +75,7 @@ function ExpensesApp(): JSX.Element {
     }
 
     return (
-        <div>
+        <div className={classes.container}>
             <DateRangePicker fromDate={fromDate} toDate={toDate} onFromDateChanged={onFromDateChanged} onToDateChanged={onToDateChanged} />
             <TotalAmount amountInEuros={amountInEuros} />
 
