@@ -1,10 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './App.css';
-import { DateRangePicker } from './components/DateRangePicker';
-import { ExpenseItem } from './components/ExpenseItem';
-import { TotalAmount } from './components/TotalAmount';
+import '../App.css';
+import { DateRangePicker } from '../components/DateRangePicker';
+import { ExpenseItem } from '../components/ExpenseItem';
+import { TotalAmount } from '../components/TotalAmount';
 import {
     Status,
     fetchExpenses,
@@ -14,8 +14,8 @@ import {
     selectExpensesInRange,
     updateFromDate,
     updateToDate,
-} from './redux/reducers/expenses';
-import { RootState } from './redux/store';
+} from '../redux/reducers/expenses';
+import { RootState } from '../redux/store';
 import React from 'react';
 
 const useStyles = makeStyles(() => ({

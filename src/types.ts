@@ -13,6 +13,7 @@ export interface Expense {
 
 export interface ExpenseToReview {
     externalId: string;
+    accountId: number;
     date: number;
     amount: number;
     currency: 'EUR' | 'CHF';

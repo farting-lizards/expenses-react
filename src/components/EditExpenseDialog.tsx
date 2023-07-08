@@ -17,7 +17,6 @@ import { format } from 'date-fns';
 import { CategoryIcon } from './CategoryIcon';
 import { Currency, Expense, NewExpense } from '../types';
 import { editExpense } from '../redux/reducers/expenses';
-import { current } from 'immer';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -57,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const currencies: { value: Currency; label: string }[] = [
+export const currencies: { value: Currency; label: string }[] = [
     {
         value: 'EUR',
         label: '€',
@@ -68,7 +67,7 @@ const currencies: { value: Currency; label: string }[] = [
     },
 ];
 
-const accounts = [
+export const accounts = [
     {
         value: 0,
         label: 'Joint Revolut',
@@ -91,7 +90,14 @@ const accounts = [
     },
 ];
 
-const categories = [
+const normalizeString = (str: string | null) => (str ? str?.trim().toLowerCase() : '');
+
+export const wiseToCustomCategory = (wiseCategory: string): string => {
+    const categoryFound = categories.find((c) => normalizeString(wiseCategory).includes(normalizeString(c.value)))?.value;
+    return categoryFound ?? 'other';
+};
+
+export const categories = [
     {
         value: 'groceries',
         label: 'Groceries',

@@ -57,6 +57,19 @@ export const startReview = createAsyncThunk('expenses/startReview', async () => 
     return response;
 });
 
+export const rejectExpense = createAsyncThunk('expenses/rejectExpense', async (payload: { externalExpenseId: string }) => {
+    const response = await client.delete(`/api/expenses-in-review/${payload.externalExpenseId}`);
+    return response;
+});
+
+export const acceptExpense = createAsyncThunk(
+    'expenses/acceptExpense',
+    async (payload: { expense: NewExpense; externalExpenseId: string }): Promise<Expense> => {
+        const response = await client.post(`/api/expenses-in-review/${payload.externalExpenseId}`, payload.expense);
+        return response;
+    }
+);
+
 export const releaseExpensesInReview = createAsyncThunk(
     'expenses/deleteExpense',
     async (_, thunkApi): Promise<number> => {
@@ -154,7 +167,7 @@ const expensesSlice = createSlice({
 
         builder.addCase('expenses/startReview/fulfilled', (state, action: AnyAction) => {
             state.releaseExpensesOnRouteChange.push(...action.payload.map((e: ExpenseToReview) => e.externalId));
-            state.expensesToReview.push(action.payload);
+            state.expensesToReview.push(...action.payload);
         });
 
         builder.addCase('expenses/addExpense/fulfilled', (state, action: AnyAction) => {
