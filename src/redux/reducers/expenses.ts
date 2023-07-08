@@ -2,6 +2,7 @@ import { AnyAction, createAsyncThunk, createSlice, isAsyncThunkAction } from '@r
 import { Expense, ExpenseToReview, NewExpense, Summary } from '../../types';
 import { client } from '../../utilities/client';
 import { RootState } from '../store';
+import { normalizeString } from '../../utilities/string-ops';
 
 export enum Status {
     IDLE = 'IDLE',
@@ -214,9 +215,10 @@ export const selectSummary = (state: RootState): Summary => {
     const summary = expenses.reduce(
         (acc: Summary, expense: Expense) => {
             const amount = expense.currency === 'EUR' ? expense.amount : chfToEuro(expense.amount);
-            if (expense.account.name === 'wise david' || expense.account.name === 'revolut david') {
+            const account = normalizeString(expense.account.name);
+            if (account === 'wise david' || account === 'revolut david') {
                 acc.david = +(acc.david + amount).toFixed(2);
-            } else if (expense.account.name === 'wise dini' || expense.account.name === 'revolut dini') {
+            } else if (account === 'wise dini' || account === 'revolut dini') {
                 acc.dini = +(acc.dini + amount).toFixed(2);
             }
             return acc;

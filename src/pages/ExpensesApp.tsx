@@ -32,7 +32,6 @@ function ExpensesApp(): JSX.Element {
     const expenses = useSelector(selectExpensesInRange);
     const amountInEuros = useSelector(selectAmountInEuros);
     const expensesStatus = useSelector((state: RootState) => state.expenses.status);
-    const expensesToReviewCountStatus = useSelector((state: RootState) => state.expenses.expensesToReviewCountStatus);
 
     const fromDate = useSelector((state: RootState) => state.expenses.fromDate);
     const toDate = useSelector((state: RootState) => state.expenses.toDate);
@@ -44,18 +43,6 @@ function ExpensesApp(): JSX.Element {
         console.log('Effect in ExpensesApp');
         dispatch(releaseExpensesInReview());
     }, [dispatch]);
-
-    useEffect(() => {
-        if (expensesStatus === Status.IDLE) {
-            dispatch(fetchExpenses());
-        }
-    }, [expensesStatus, dispatch]);
-
-    useEffect(() => {
-        if (expensesToReviewCountStatus === Status.IDLE) {
-            dispatch(fetchExpensesToReviewCount());
-        }
-    }, [expensesToReviewCountStatus, dispatch]);
 
     let content;
     if (expensesStatus === Status.LOADING) {

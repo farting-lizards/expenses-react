@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { BottomNavBar } from './components/BottomNavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './redux/store';
-import { selectSummary, startReview } from './redux/reducers/expenses';
+import { Status, fetchExpenses, fetchExpensesToReviewCount, selectSummary, startReview } from './redux/reducers/expenses';
 import { AddExpenseDialog } from './components/AddExpenseDialog';
 import { SummaryDialog } from './components/SummaryDialog';
 import { ImportExpensesDialog } from './components/ImportExpensesDialog';
@@ -31,10 +31,25 @@ export const Root = (): JSX.Element => {
 
     const expensesToReviewCount = useSelector((state: RootState) => state.expenses.expensesToReviewCount);
     const summary = useSelector(selectSummary);
+    const expensesStatus = useSelector((state: RootState) => state.expenses.status);
+    const expensesToReviewCountStatus = useSelector((state: RootState) => state.expenses.expensesToReviewCountStatus);
 
     const onStartReview = () => {
         dispatch(startReview());
     };
+
+    useEffect(() => {
+        if (expensesStatus === Status.IDLE) {
+            dispatch(fetchExpenses());
+        }
+    }, [expensesStatus, dispatch]);
+
+    useEffect(() => {
+        if (expensesToReviewCountStatus === Status.IDLE) {
+            dispatch(fetchExpensesToReviewCount());
+        }
+    }, [expensesToReviewCountStatus, dispatch]);
+
     return (
         <div>
             <Outlet />

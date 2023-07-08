@@ -17,10 +17,11 @@ import { format } from 'date-fns';
 import { CategoryIcon } from './CategoryIcon';
 import { Currency, Expense, NewExpense } from '../types';
 import { editExpense } from '../redux/reducers/expenses';
+import { normalizeString } from '../utilities/string-ops';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        background: theme.palette.primary.main,
+        background: theme.palette.primary.dark,
     },
     flex: {
         display: 'flex',
@@ -89,8 +90,6 @@ export const accounts = [
         label: 'Revolut Dini',
     },
 ];
-
-const normalizeString = (str: string | null) => (str ? str?.trim().toLowerCase() : '');
 
 export const wiseToCustomCategory = (wiseCategory: string): string => {
     const categoryFound = categories.find((c) => normalizeString(wiseCategory).includes(normalizeString(c.value)))?.value;
@@ -183,6 +182,7 @@ export const EditExpenseDialog = ({
         <Dialog open={open} onClose={handleClose} classes={{ paper: classes.paper }} fullWidth>
             <DialogContent className={classes.flex}>
                 <TextField
+                    color="secondary"
                     autoFocus
                     margin="dense"
                     id="description"
@@ -228,6 +228,7 @@ export const EditExpenseDialog = ({
                 <div className={classes.textFieldGroup}>
                     <TextField
                         id="date"
+                        color="secondary"
                         label="Date"
                         type="date"
                         margin="dense"
@@ -240,6 +241,7 @@ export const EditExpenseDialog = ({
                     />
                     <TextField
                         id="account"
+                        color="secondary"
                         select
                         label="Account"
                         value={account}
@@ -258,6 +260,7 @@ export const EditExpenseDialog = ({
 
                 <TextField
                     id="category"
+                    color="secondary"
                     select
                     fullWidth
                     label="Category"
