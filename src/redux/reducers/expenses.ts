@@ -84,7 +84,11 @@ export const releaseExpensesInReview = createAsyncThunk(
 export const addExpense = createAsyncThunk(
     'expenses/addExpense',
     async (payload: { expense: NewExpense }): Promise<Expense> => {
-        const response = await client.post('/api/expenses', payload.expense);
+        const response = await client.post('/api/expenses', {
+            ...payload.expense,
+            account_id: payload.expense.accountId,
+            category_name: payload.expense.category,
+        });
         return response;
     }
 );
@@ -92,7 +96,11 @@ export const addExpense = createAsyncThunk(
 export const editExpense = createAsyncThunk(
     'expenses/editExpense',
     async (payload: { expense: NewExpense; id: number }): Promise<Expense> => {
-        const response = await client.put(`/api/expenses/${payload.id}`, payload.expense);
+        const response = await client.patch(`/api/expenses/${payload.id}`, {
+            ...payload.expense,
+            account_id: payload.expense.accountId,
+            category_name: payload.expense.category,
+        });
         return response;
     }
 );
@@ -178,7 +186,8 @@ const expensesSlice = createSlice({
             state.expenses = state.expenses.map((expense) => (expense.id === action.payload.id ? action.payload : expense));
         });
         builder.addCase('expenses/deleteExpense/fulfilled', (state, action: AnyAction) => {
-            state.expenses = state.expenses.filter((expense) => expense.id !== action.payload);
+            console.log('Pauload', action.payload);
+            state.expenses = state.expenses.filter((expense) => expense.id !== action.payload.id);
         });
     },
 });

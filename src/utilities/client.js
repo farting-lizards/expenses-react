@@ -42,6 +42,10 @@ client.put = function (endpoint, body, customConfig = {}) {
     return client(endpoint, { ...customConfig, method: 'PUT', body });
 };
 
+client.patch = function (endpoint, body, customConfig = {}) {
+    return client(endpoint, { ...customConfig, method: 'PATCH', body });
+};
+
 client.delete = function (endpoint, customConfig = {}) {
     return client(endpoint, { ...customConfig, method: 'DELETE' });
 };
