@@ -1,7 +1,8 @@
-import { AnyAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Expense, NewExpense, Summary } from '../../types';
+import { AnyAction, createAsyncThunk, createSlice, isAsyncThunkAction } from '@reduxjs/toolkit';
+import { Expense, ExpenseToReview, NewExpense, Summary } from '../../types';
 import { client } from '../../utilities/client';
 import { RootState } from '../store';
+import { normalizeString } from '../../utilities/string-ops';
 
 export enum Status {
     IDLE = 'IDLE',
@@ -18,6 +19,17 @@ const initialState = {
     expenses: [] as Expense[],
     status: Status.IDLE,
     error: null,
+
+    importExpensesStatus: Status.IDLE,
+    latestImportedExpenseCount: 0,
+    importExpensesError: null,
+
+    expensesToReview: [] as ExpenseToReview[],
+    expensesToReviewCount: 0,
+    expensesToReviewCountStatus: Status.IDLE,
+    expensesToReviewCountError: null,
+    releaseExpensesOnRouteChange: [] as string[],
+
     fromDate: FIRST_DAY_OF_MONTH,
     toDate: LAST_DAY_OF_MONTH,
 };
@@ -27,10 +39,56 @@ export const fetchExpenses = createAsyncThunk('expenses/fetchExpenses', async ()
     return response;
 });
 
+export const fetchExpensesToReviewCount = createAsyncThunk('expenses/fetchExpensesToReviewCount', async () => {
+    const response = await client.get('/api/expenses-in-review/count');
+    return response;
+});
+
+export const importExpenses = createAsyncThunk(
+    'expenses/importExpenses',
+    async (payload: { fromDate: string; toDate: string }, thunkApi) => {
+        const response = await client.get(`/api/expenses-in-review/discover?fromDate=${payload.fromDate}&toDate=${payload.toDate}`);
+        thunkApi.dispatch(fetchExpensesToReviewCount());
+        return response;
+    }
+);
+
+export const startReview = createAsyncThunk('expenses/startReview', async () => {
+    const response = await client.get(`/api/expenses-in-review/start-review`);
+    return response;
+});
+
+export const rejectExpense = createAsyncThunk('expenses/rejectExpense', async (payload: { externalExpenseId: string }) => {
+    const response = await client.delete(`/api/expenses-in-review/${payload.externalExpenseId}`);
+    return response;
+});
+
+export const acceptExpense = createAsyncThunk(
+    'expenses/acceptExpense',
+    async (payload: { expense: NewExpense; externalExpenseId: string }): Promise<Expense> => {
+        const response = await client.post(`/api/expenses-in-review/${payload.externalExpenseId}`, payload.expense);
+        return response;
+    }
+);
+
+export const releaseExpensesInReview = createAsyncThunk(
+    'expenses/deleteExpense',
+    async (_, thunkApi): Promise<number> => {
+        const state = thunkApi.getState();
+        console.log('Release exp', (state as RootState).expenses.releaseExpensesOnRouteChange);
+        const response = await client.post(`/api/expenses-in-review/release`, (state as RootState).expenses.releaseExpensesOnRouteChange);
+        return response;
+    }
+);
+
 export const addExpense = createAsyncThunk(
     'expenses/addExpense',
     async (payload: { expense: NewExpense }): Promise<Expense> => {
-        const response = await client.post('/api/expenses', payload.expense);
+        const response = await client.post('/api/expenses', {
+            ...payload.expense,
+            account_id: payload.expense.accountId,
+            category_name: payload.expense.category,
+        });
         return response;
     }
 );
@@ -38,7 +96,11 @@ export const addExpense = createAsyncThunk(
 export const editExpense = createAsyncThunk(
     'expenses/editExpense',
     async (payload: { expense: NewExpense; id: number }): Promise<Expense> => {
-        const response = await client.put(`/api/expenses/${payload.id}`, payload.expense);
+        const response = await client.patch(`/api/expenses/${payload.id}`, {
+            ...payload.expense,
+            account_id: payload.expense.accountId,
+            category_name: payload.expense.category,
+        });
         return response;
     }
 );
@@ -70,6 +132,10 @@ const expensesSlice = createSlice({
         updateToDate(state, action: { type: string; payload: string }) {
             state.toDate = action.payload;
         },
+        resetImportExpenseState(state) {
+            state.importExpensesError = null;
+            state.importExpensesStatus = Status.IDLE;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase('expenses/fetchExpenses/pending', (state) => {
@@ -83,6 +149,36 @@ const expensesSlice = createSlice({
             state.status = Status.FAILED;
             state.error = action.error.message;
         });
+
+        builder.addCase('expenses/importExpenses/pending', (state) => {
+            state.importExpensesStatus = Status.LOADING;
+        });
+        builder.addCase('expenses/importExpenses/fulfilled', (state, action: AnyAction) => {
+            state.importExpensesStatus = Status.COMPLETED;
+            state.latestImportedExpenseCount = action.payload;
+        });
+        builder.addCase('expenses/importExpenses/rejected', (state, action: AnyAction) => {
+            state.importExpensesStatus = Status.FAILED;
+            state.importExpensesError = action.error.message;
+        });
+
+        builder.addCase('expenses/fetchExpensesToReviewCount/pending', (state) => {
+            state.expensesToReviewCountStatus = Status.LOADING;
+        });
+        builder.addCase('expenses/fetchExpensesToReviewCount/fulfilled', (state, action: AnyAction) => {
+            state.expensesToReviewCountStatus = Status.COMPLETED;
+            state.expensesToReviewCount = action.payload;
+        });
+        builder.addCase('expenses/fetchExpensesToReviewCount/rejected', (state, action: AnyAction) => {
+            state.expensesToReviewCountStatus = Status.FAILED;
+            state.expensesToReviewCountError = action.error.message;
+        });
+
+        builder.addCase('expenses/startReview/fulfilled', (state, action: AnyAction) => {
+            state.releaseExpensesOnRouteChange.push(...action.payload.map((e: ExpenseToReview) => e.externalId));
+            state.expensesToReview.push(...action.payload);
+        });
+
         builder.addCase('expenses/addExpense/fulfilled', (state, action: AnyAction) => {
             state.expenses.unshift(action.payload);
         });
@@ -90,12 +186,13 @@ const expensesSlice = createSlice({
             state.expenses = state.expenses.map((expense) => (expense.id === action.payload.id ? action.payload : expense));
         });
         builder.addCase('expenses/deleteExpense/fulfilled', (state, action: AnyAction) => {
-            state.expenses = state.expenses.filter((expense) => expense.id !== action.payload);
+            console.log('Pauload', action.payload);
+            state.expenses = state.expenses.filter((expense) => expense.id !== action.payload.id);
         });
     },
 });
 
-export const { expenseUpdated, updateFromDate, updateToDate } = expensesSlice.actions;
+export const { expenseUpdated, updateFromDate, updateToDate, resetImportExpenseState } = expensesSlice.actions;
 
 export default expensesSlice.reducer;
 
@@ -127,9 +224,10 @@ export const selectSummary = (state: RootState): Summary => {
     const summary = expenses.reduce(
         (acc: Summary, expense: Expense) => {
             const amount = expense.currency === 'EUR' ? expense.amount : chfToEuro(expense.amount);
-            if (expense.account.name === 'wise david' || expense.account.name === 'revolut david') {
+            const account = normalizeString(expense.account.name);
+            if (account === 'wise david' || account === 'revolut david') {
                 acc.david = +(acc.david + amount).toFixed(2);
-            } else if (expense.account.name === 'wise dini' || expense.account.name === 'revolut dini') {
+            } else if (account === 'wise dini' || account === 'revolut dini') {
                 acc.dini = +(acc.dini + amount).toFixed(2);
             }
             return acc;

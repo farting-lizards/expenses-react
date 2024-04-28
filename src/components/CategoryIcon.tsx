@@ -28,40 +28,40 @@ export function CategoryIcon({ category }: { category: string }): JSX.Element {
     let icon;
     switch (category) {
         case 'groceries':
-            icon = <ShoppingCartOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <ShoppingCartOutlinedIcon color="secondary" />;
             break;
         case 'plants':
-            icon = <LocalFloristOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <LocalFloristOutlinedIcon color="secondary" />;
             break;
         case 'eating-out':
-            icon = <FastfoodOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <FastfoodOutlinedIcon color="secondary" />;
             break;
         case 'rent':
-            icon = <HomeOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <HomeOutlinedIcon color="secondary" />;
             break;
         case 'travel':
-            icon = <FlightTakeoffOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <FlightTakeoffOutlinedIcon color="secondary" />;
             break;
         case 'car':
-            icon = <DirectionsCarOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <DirectionsCarOutlinedIcon color="secondary" />;
             break;
         case 'pet':
-            icon = <PetsOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <PetsOutlinedIcon color="secondary" />;
             break;
         case 'family':
-            icon = <FavoriteOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <FavoriteOutlinedIcon color="secondary" />;
             break;
         case 'gadgets':
-            icon = <DevicesOtherOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <DevicesOtherOutlinedIcon color="secondary" />;
             break;
         case 'medical':
-            icon = <LocalPharmacyOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <LocalPharmacyOutlinedIcon color="secondary" />;
             break;
         case 'other':
-            icon = <DashboardOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <DashboardOutlinedIcon color="secondary" />;
             break;
         default:
-            icon = <DashboardOutlinedIcon style={{ color: '#C03757' }} />;
+            icon = <DashboardOutlinedIcon color="secondary" />;
     }
     return icon;
 }

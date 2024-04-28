@@ -1,26 +1,23 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { ADD_EXPENSE } from '../redux/actions';
+import { makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import DatePicker from 'react-datepicker';
 import { format } from 'date-fns';
-import { CategoryIcon } from './CategoryIcon';
-import { Currency, Expense, NewExpense } from '../types';
 import { addExpense } from '../redux/reducers/expenses';
+import { Currency, NewExpense } from '../types';
+import { CategoryIcon } from './CategoryIcon';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        background: theme.palette.secondary.main,
+        background: theme.palette.primary.dark,
+        minHeight: '240px',
     },
     flex: {
         display: 'flex',
@@ -53,6 +50,12 @@ const useStyles = makeStyles((theme) => ({
             lineHeight: '1em',
             marginLeft: '12px',
         },
+    },
+    actionButton: {
+        width: '100%',
+    },
+    dialogActions: {
+        justifyContent: 'center',
     },
 }));
 
@@ -137,7 +140,7 @@ const categories = [
     },
 ];
 
-export const AddExpenseDialog = ({ open, handleClose }: { open: boolean; handleClose(): void }) => {
+export const AddExpenseDialog = ({ open, handleClose }: { open: boolean; handleClose(): void }): JSX.Element => {
     const [description, setDescription] = useState('');
     const [currency, setCurrency] = useState<Currency>('EUR');
     const [amount, setAmount] = useState<number>(0);
@@ -164,6 +167,7 @@ export const AddExpenseDialog = ({ open, handleClose }: { open: boolean; handleC
         <Dialog open={open} onClose={handleClose} classes={{ paper: classes.paper }} fullWidth>
             <DialogContent className={classes.flex}>
                 <TextField
+                    color="secondary"
                     autoFocus
                     margin="dense"
                     id="description"
@@ -178,6 +182,7 @@ export const AddExpenseDialog = ({ open, handleClose }: { open: boolean; handleC
                 <div className={classes.textFieldGroup}>
                     <TextField
                         id="currency"
+                        color="secondary"
                         select
                         label="Currency"
                         value={currency}
@@ -195,6 +200,7 @@ export const AddExpenseDialog = ({ open, handleClose }: { open: boolean; handleC
                     </TextField>
                     <TextField
                         margin="dense"
+                        color="secondary"
                         id="amount"
                         label="Amount"
                         type="number"
@@ -206,6 +212,7 @@ export const AddExpenseDialog = ({ open, handleClose }: { open: boolean; handleC
 
                 <div className={classes.textFieldGroup}>
                     <TextField
+                        color="secondary"
                         id="date"
                         label="Date"
                         type="date"
@@ -218,6 +225,7 @@ export const AddExpenseDialog = ({ open, handleClose }: { open: boolean; handleC
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDate(event.target.valueAsDate || new Date())}
                     />
                     <TextField
+                        color="secondary"
                         id="account"
                         select
                         label="Account"
@@ -236,6 +244,7 @@ export const AddExpenseDialog = ({ open, handleClose }: { open: boolean; handleC
                 </div>
 
                 <TextField
+                    color="secondary"
                     id="category"
                     select
                     fullWidth
@@ -252,8 +261,8 @@ export const AddExpenseDialog = ({ open, handleClose }: { open: boolean; handleC
                     ))}
                 </TextField>
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleAddExpense} color="primary">
+            <DialogActions className={classes.dialogActions}>
+                <Button onClick={handleAddExpense} color="secondary" className={classes.actionButton}>
                     Save
                 </Button>
             </DialogActions>

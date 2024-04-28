@@ -17,11 +17,11 @@ import { format } from 'date-fns';
 import { CategoryIcon } from './CategoryIcon';
 import { Currency, Expense, NewExpense } from '../types';
 import { editExpense } from '../redux/reducers/expenses';
-import { current } from 'immer';
+import { normalizeString } from '../utilities/string-ops';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        background: theme.palette.secondary.main,
+        background: theme.palette.primary.dark,
     },
     flex: {
         display: 'flex',
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const currencies: { value: Currency; label: string }[] = [
+export const currencies: { value: Currency; label: string }[] = [
     {
         value: 'EUR',
         label: '€',
@@ -68,7 +68,7 @@ const currencies: { value: Currency; label: string }[] = [
     },
 ];
 
-const accounts = [
+export const accounts = [
     {
         value: 0,
         label: 'Joint Revolut',
@@ -91,10 +91,19 @@ const accounts = [
     },
 ];
 
-const categories = [
+export const wiseToCustomCategory = (wiseCategory: string): string => {
+    const categoryFound = categories.find((c) => normalizeString(wiseCategory).includes(normalizeString(c.value)))?.value;
+    return categoryFound ?? 'other';
+};
+
+export const categories = [
     {
         value: 'groceries',
         label: 'Groceries',
+    },
+    {
+        value: 'house',
+        label: 'House',
     },
     {
         value: 'plants',
@@ -173,6 +182,7 @@ export const EditExpenseDialog = ({
         <Dialog open={open} onClose={handleClose} classes={{ paper: classes.paper }} fullWidth>
             <DialogContent className={classes.flex}>
                 <TextField
+                    color="secondary"
                     autoFocus
                     margin="dense"
                     id="description"
@@ -218,6 +228,7 @@ export const EditExpenseDialog = ({
                 <div className={classes.textFieldGroup}>
                     <TextField
                         id="date"
+                        color="secondary"
                         label="Date"
                         type="date"
                         margin="dense"
@@ -230,6 +241,7 @@ export const EditExpenseDialog = ({
                     />
                     <TextField
                         id="account"
+                        color="secondary"
                         select
                         label="Account"
                         value={account}
@@ -248,6 +260,7 @@ export const EditExpenseDialog = ({
 
                 <TextField
                     id="category"
+                    color="secondary"
                     select
                     fullWidth
                     label="Category"
