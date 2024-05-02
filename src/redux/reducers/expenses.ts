@@ -1,4 +1,4 @@
-import { AnyAction, createAsyncThunk, createSlice, isAsyncThunkAction } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Expense, ExpenseToReview, NewExpense, Summary } from '../../types';
 import { client } from '../../utilities/client';
 import { RootState } from '../store';

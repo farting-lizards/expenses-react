@@ -2,7 +2,11 @@ import { Expense } from '../types';
 
 let nextExpenseId = 0;
 
-export const addExpense = (expense: Expense) => ({
+type Payload = Expense & {
+    id: number;
+};
+
+export const addExpense = (expense: Expense): { type: string; payload: Payload } => ({
     type: ADD_EXPENSE,
     payload: {
         ...expense,

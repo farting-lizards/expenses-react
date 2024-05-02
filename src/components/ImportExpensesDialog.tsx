@@ -1,7 +1,6 @@
 import { Button, CircularProgress, DialogActions, DialogTitle, makeStyles, TextField } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import { Summary } from '../types';
 import React, { useState } from 'react';
 import { format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';

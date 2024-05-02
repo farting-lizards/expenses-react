@@ -13,7 +13,7 @@ import { CategoryIcon } from './CategoryIcon';
 import './DateRangePickerStyles.css';
 import { EditExpenseDialog } from './EditExpenseDialog';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     container: {
         display: 'flex',
         alignItems: 'center',
