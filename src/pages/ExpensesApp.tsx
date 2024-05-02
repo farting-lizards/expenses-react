@@ -7,8 +7,6 @@ import { ExpenseItem } from '../components/ExpenseItem';
 import { TotalAmount } from '../components/TotalAmount';
 import {
     Status,
-    fetchExpenses,
-    fetchExpensesToReviewCount,
     releaseExpensesInReview,
     selectAmountInEuros,
     selectExpensesInRange,

@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ADD_EXPENSE } from '../redux/actions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import DatePicker from 'react-datepicker';
 import { format } from 'date-fns';
 import { CategoryIcon } from './CategoryIcon';
 import { Currency, Expense, NewExpense } from '../types';
@@ -155,7 +151,7 @@ export const EditExpenseDialog = ({
     currentExpense: Expense;
     open: boolean;
     handleClose(): void;
-}) => {
+}): JSX.Element => {
     const [description, setDescription] = useState(currentExpense.description);
     const [currency, setCurrency] = useState<Currency>(currentExpense.currency);
     const [amount, setAmount] = useState<number>(currentExpense.amount);

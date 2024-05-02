@@ -1,5 +1,5 @@
 import { Button, Card, CardActions, MenuItem, TextField, makeStyles } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Currency, ExpenseToReview } from '../types';
 import { accounts, categories, currencies, wiseToCustomCategory } from './EditExpenseDialog';
 import { useDispatch } from 'react-redux';
