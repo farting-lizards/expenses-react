@@ -6,8 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { unstable_createMuiStrictModeTheme as createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { ReviewExpenses } from './pages/ReviewExpenses';
+import { Login } from './pages/Login';
+import { isLoggedIn } from './utilities/auth';
 import { Root } from './Root';
 
 const font = "'Baloo Bhaina 2', cursive";
@@ -36,10 +38,20 @@ const theme = createMuiTheme({
         fontFamily: font,
     },
 });
+const RequireAuth = ({ children }: { children: JSX.Element }): JSX.Element => (isLoggedIn() ? children : <Navigate to="/login" replace />);
+
 const router = createBrowserRouter([
     {
+        path: '/login',
+        element: <Login />,
+    },
+    {
         path: '/',
-        element: <Root />,
+        element: (
+            <RequireAuth>
+                <Root />
+            </RequireAuth>
+        ),
         children: [
             {
                 path: '',

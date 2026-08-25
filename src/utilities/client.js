@@ -1,9 +1,15 @@
 // A tiny wrapper around fetch(), borrowed from
 // https://kentcdodds.com/blog/replace-axios-with-a-simple-custom-fetch-wrapper
 
+import { clearToken, getToken } from './auth';
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function client(endpoint, { body, ...customConfig } = {}) {
     const headers = { 'Content-Type': 'application/json' };
+    const token = getToken();
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
 
     const config = {
         method: body ? 'POST' : 'GET',
@@ -21,6 +27,11 @@ export async function client(endpoint, { body, ...customConfig } = {}) {
     let data;
     try {
         const response = await window.fetch(endpoint, config);
+        if (response.status === 401) {
+            clearToken();
+            window.location.assign('/login');
+            return Promise.reject('Not logged in');
+        }
         data = await response.json();
         if (response.ok) {
             return data;
